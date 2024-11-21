@@ -5,10 +5,13 @@ import { MovieCard } from './components/MovieCard';
 import { MovieDialog } from './components/MovieDialog';
 import { Header } from './components/Header';
 import { SearchBar } from './components/SearchBar';
+import { AdminPanel } from './components/AdminPanel';
+import { useAuthStore } from './store/useAuthStore';
 
 function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const user = useAuthStore(state => state.user);
 
   const filteredMovies = movies.filter(movie => 
     movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -25,6 +28,8 @@ function App() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {user?.isAdmin && <AdminPanel />}
+        
         <SearchBar onSearch={handleSearch} />
 
         {filteredMovies.length === 0 ? (
